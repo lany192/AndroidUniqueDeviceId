@@ -13,6 +13,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         TextView showText = (TextView) findViewById(R.id.my_text_view);
-        showText.setText(DeviceUtils.getUniqueDeviceId(this));
+        showText.setText("唯一设备号:" + DeviceUtils.getUniqueDeviceId(this));
     }
 }
