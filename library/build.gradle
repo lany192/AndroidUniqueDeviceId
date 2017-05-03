@@ -1,4 +1,6 @@
 apply plugin: 'com.android.library'
+apply plugin: 'maven'
+apply plugin: 'bintray-release'
 
 android {
     compileSdkVersion 25
@@ -10,21 +12,45 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }
 
-dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    testCompile 'junit:junit:4.12'
+publish {
+    bintrayUser = "${BINTRAY_USER}"
+    bintrayKey =  "${BINTRAY_KEY}"
+    artifactId = 'UniqueDeviceId'
+    userOrg = 'lany192'
+    groupId = 'com.lany'
+    uploadName = 'UniqueDeviceId'
+    publishVersion = '1.0.2'
+    autoPublish = true
+    dryRun = false
+    desc = 'generate android unique device id.'
+    website = 'https://github.com/lany192/AndroidUniqueDeviceId'
+    issueTracker = 'https://github.com/lany192/AndroidUniqueDeviceId/issues'
+    repository = 'https://github.com/lany192/AndroidUniqueDeviceId.git'
+    licences = ['Apache-2.0']
+}
+
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+artifacts {
+    archives javadocJar
+    archives sourcesJar
 }

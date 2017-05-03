@@ -1,21 +1,29 @@
 package com.lany.uniqueid;
 
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class DeviceUtils {
+    private static final String TAG = "DeviceUtils";
+    private static final String KEY_NAME = "sdjhfsdjfhsjdfh2s3sdsdf";//任意，但不能和系统设置冲突
+
     /**
      * 根据设备特征生成一个不变的设备id
      */
     public static String getUniqueDeviceId(Context context) {
+        String uniqueId = Settings.System.getString(context.getContentResolver(), KEY_NAME);
+        if (!TextUtils.isEmpty(uniqueId)) {
+            Log.i(TAG, "读取到唯一设备ID：" + uniqueId);
+            return uniqueId;
+        }
         StringBuilder sb = new StringBuilder();
 
         TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
@@ -25,12 +33,9 @@ public class DeviceUtils {
                 sb.append(deviceId);
             }
         }
-        ContentResolver contentResolver = context.getContentResolver();
-        if (contentResolver != null) {
-            String androidId = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID);
-            if (!TextUtils.isEmpty(androidId)) {
-                sb.append(androidId);
-            }
+        String androidId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+        if (!TextUtils.isEmpty(androidId)) {
+            sb.append(androidId);
         }
 
         sb.append(android.os.Build.BOARD);//获取设备基板名称
@@ -55,9 +60,12 @@ public class DeviceUtils {
         sb.append(android.os.Build.VERSION.SDK_INT);//系统的API级别 数字表示
         sb.append(android.os.Build.SERIAL);
 
-        String uniqueId = sb.toString().trim().toUpperCase();
-        return md5(uniqueId);
+        uniqueId = md5(sb.toString().trim().toUpperCase());
+        Log.i(TAG, "生成唯一设备ID：" + uniqueId);
+        Settings.System.putString(context.getContentResolver(), KEY_NAME, uniqueId);
+        return uniqueId;
     }
+
 
     private static String md5(String str) {
         byte[] hash;
