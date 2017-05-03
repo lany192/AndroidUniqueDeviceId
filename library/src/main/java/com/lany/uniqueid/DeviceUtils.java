@@ -10,6 +10,7 @@ import android.util.Log;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.UUID;
 
 public class DeviceUtils {
     private static final String TAG = "DeviceUtils";
@@ -27,8 +28,9 @@ public class DeviceUtils {
         StringBuilder sb = new StringBuilder();
 
         TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        String deviceId = "";
         if (telephonyManager != null) {
-            String deviceId = telephonyManager.getDeviceId();
+            deviceId = telephonyManager.getDeviceId();
             if (!TextUtils.isEmpty(deviceId)) {
                 sb.append(deviceId);
             }
@@ -36,6 +38,10 @@ public class DeviceUtils {
         String androidId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
         if (!TextUtils.isEmpty(androidId)) {
             sb.append(androidId);
+        }
+
+        if (TextUtils.isEmpty(androidId) && TextUtils.isEmpty(deviceId)) {
+            sb.append(UUID.randomUUID().toString());//随机生成UUID
         }
 
         sb.append(android.os.Build.BOARD);//获取设备基板名称
