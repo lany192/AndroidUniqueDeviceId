@@ -9,8 +9,8 @@ android {
     defaultConfig {
         minSdkVersion 9
         targetSdkVersion 22
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.0.3"
 
     }
     buildTypes {
@@ -27,7 +27,7 @@ publish {
     userOrg = 'lany192'
     groupId = 'com.lany'
     uploadName = 'UniqueDeviceId'
-    publishVersion = '1.0.2'
+    publishVersion = '1.0.3'
     autoPublish = true
     dryRun = false
     desc = 'generate android unique device id.'

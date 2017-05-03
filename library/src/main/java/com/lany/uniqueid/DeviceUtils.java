@@ -13,7 +13,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class DeviceUtils {
     private static final String TAG = "DeviceUtils";
-    private static final String KEY_NAME = "sdjhfsdjfhsjdfh2s3sdsdf";//任意，但不能和系统设置冲突
+    private static final String KEY_NAME = "android_unique_device_id";//任意，但不能和系统设置冲突
 
     /**
      * 根据设备特征生成一个不变的设备id
