@@ -1,4 +1,7 @@
 [ ![Download](https://api.bintray.com/packages/lany192/maven/UniqueDeviceId/images/download.svg) ](https://bintray.com/lany192/maven/UniqueDeviceId/_latestVersion)
+
+compile 'com.lany:UniqueDeviceId:1.0.3'
+
 # AndroidUniqueDeviceId
 根据安卓手机设备特征,生成设备唯一设备号。
 
