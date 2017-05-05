@@ -2,6 +2,8 @@
 
 compile 'com.lany:UniqueDeviceId:1.0.3'
 
+调用方式：String id = DeviceUtils.getUniqueDeviceId(this);
+
 # AndroidUniqueDeviceId
 根据安卓手机设备特征,生成设备唯一设备号。
 
