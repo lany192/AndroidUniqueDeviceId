@@ -1,6 +1,6 @@
 [ ![Download](https://api.bintray.com/packages/lany192/maven/UniqueDeviceId/images/download.svg) ](https://bintray.com/lany192/maven/UniqueDeviceId/_latestVersion)
 ## Gradle引用
-    compile 'com.lany:UniqueDeviceId:1.0.3'
+    compile 'com.lany:UniqueDeviceId:1.0.4'
 ## 调用方式
     String uniqueId = DeviceUtils.getUniqueDeviceId(Context context);
 ## 注意

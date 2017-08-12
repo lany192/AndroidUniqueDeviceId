@@ -1,6 +1,7 @@
 package com.lany.uniqueid;
 
 
+import android.app.Application;
 import android.content.Context;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
@@ -20,14 +21,21 @@ public class DeviceUtils {
      * 根据设备特征生成一个不变的设备id
      */
     public static String getUniqueDeviceId(Context context) {
-        String uniqueId = Settings.System.getString(context.getContentResolver(), KEY_NAME);
+        Context ctx = context.getApplicationContext();
+        if (ctx == null) {
+            ctx = context;
+        } else {
+            ctx = ((Application) ctx).getBaseContext();
+        }
+
+        String uniqueId = Settings.System.getString(ctx.getContentResolver(), KEY_NAME);
         if (!TextUtils.isEmpty(uniqueId)) {
             Log.i(TAG, "读取到唯一设备ID：" + uniqueId);
             return uniqueId;
         }
         StringBuilder sb = new StringBuilder();
 
-        TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager telephonyManager = (TelephonyManager) ctx.getSystemService(Context.TELEPHONY_SERVICE);
         String deviceId = "";
         if (telephonyManager != null) {
             deviceId = telephonyManager.getDeviceId();
@@ -35,7 +43,7 @@ public class DeviceUtils {
                 sb.append(deviceId);
             }
         }
-        String androidId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+        String androidId = Settings.Secure.getString(ctx.getContentResolver(), Settings.Secure.ANDROID_ID);
         if (!TextUtils.isEmpty(androidId)) {
             sb.append(androidId);
         }
@@ -47,8 +55,8 @@ public class DeviceUtils {
         sb.append(android.os.Build.BOARD);//获取设备基板名称
         sb.append(android.os.Build.BOOTLOADER);//获取设备引导程序版本号
         sb.append(android.os.Build.BRAND);//获取设备品牌
-        sb.append(android.os.Build.CPU_ABI);//获取设备指令集名称（CPU的类型）
-        sb.append(android.os.Build.CPU_ABI2);//获取第二个指令集名称
+//        sb.append(android.os.Build.CPU_ABI);//获取设备指令集名称（CPU的类型）
+//        sb.append(android.os.Build.CPU_ABI2);//获取第二个指令集名称
         sb.append(android.os.Build.DEVICE);//获取设备驱动名称
         sb.append(android.os.Build.DISPLAY);//获取设备显示的版本包（在系统设置中显示为版本号）和ID一样
         sb.append(android.os.Build.FINGERPRINT);//设备的唯一标识。由设备的多个信息拼接合成。
@@ -68,7 +76,7 @@ public class DeviceUtils {
 
         uniqueId = md5(sb.toString().trim().toUpperCase());
         Log.i(TAG, "生成唯一设备ID：" + uniqueId);
-        Settings.System.putString(context.getContentResolver(), KEY_NAME, uniqueId);
+        Settings.System.putString(ctx.getContentResolver(), KEY_NAME, uniqueId);
         return uniqueId;
     }
 

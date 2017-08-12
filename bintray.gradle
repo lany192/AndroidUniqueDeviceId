@@ -1,0 +1,53 @@
+apply plugin: 'maven'
+apply plugin: 'bintray-release'
+Properties properties = new Properties()
+
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+publish {
+    bintrayUser = properties.getProperty("BINTRAY_USER")
+    bintrayKey = properties.getProperty("BINTRAY_KEY")
+    artifactId = 'UniqueDeviceId'
+    userOrg = 'lany192'
+    groupId = 'com.lany'
+    uploadName = 'UniqueDeviceId'
+    publishVersion = '1.0.4'
+    autoPublish = true
+    dryRun = false
+    desc = 'generate android unique device id.'
+    website = 'https://github.com/lany192/AndroidUniqueDeviceId'
+    issueTracker = 'https://github.com/lany192/AndroidUniqueDeviceId/issues'
+    repository = 'https://github.com/lany192/AndroidUniqueDeviceId.git'
+    licences = ['Apache-2.0']
+}
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+    options.encoding = "UTF-8"
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+javadoc {
+    options {
+        encoding "UTF-8"
+        charSet 'UTF-8'
+        author true
+        version true
+        links "http://docs.oracle.com/javase/7/docs/api"
+        title 'This is an android banner view'   // 文档标题
+    }
+}
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}

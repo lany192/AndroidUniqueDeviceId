@@ -1,16 +1,14 @@
 apply plugin: 'com.android.library'
-apply plugin: 'maven'
-apply plugin: 'bintray-release'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "26.0.0"
 
     defaultConfig {
         minSdkVersion 9
         targetSdkVersion 22
-        versionCode 3
-        versionName "1.0.3"
+        versionCode 4
+        versionName "1.0.4"
 
     }
     buildTypes {
@@ -20,37 +18,4 @@ android {
     }
 }
 
-publish {
-    bintrayUser = "${BINTRAY_USER}"
-    bintrayKey =  "${BINTRAY_KEY}"
-    artifactId = 'UniqueDeviceId'
-    userOrg = 'lany192'
-    groupId = 'com.lany'
-    uploadName = 'UniqueDeviceId'
-    publishVersion = '1.0.3'
-    autoPublish = true
-    dryRun = false
-    desc = 'generate android unique device id.'
-    website = 'https://github.com/lany192/AndroidUniqueDeviceId'
-    issueTracker = 'https://github.com/lany192/AndroidUniqueDeviceId/issues'
-    repository = 'https://github.com/lany192/AndroidUniqueDeviceId.git'
-    licences = ['Apache-2.0']
-}
-
-
-task sourcesJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
-}
-task javadoc(type: Javadoc) {
-    source = android.sourceSets.main.java.srcDirs
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-}
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-artifacts {
-    archives javadocJar
-    archives sourcesJar
-}
+apply from: '../bintray.gradle'
