@@ -8,9 +8,6 @@ import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
 public class DeviceUtils {
@@ -19,6 +16,7 @@ public class DeviceUtils {
 
     /**
      * 根据设备特征生成一个不变的设备id
+     *
      * @param context 上下文
      * @return 唯一设备id
      */
@@ -37,10 +35,10 @@ public class DeviceUtils {
         }
         StringBuilder sb = new StringBuilder();
 
-        TelephonyManager telephonyManager = (TelephonyManager) ctx.getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager tm = (TelephonyManager) ctx.getSystemService(Context.TELEPHONY_SERVICE);
         String deviceId = "";
-        if (telephonyManager != null) {
-            deviceId = telephonyManager.getDeviceId();
+        if (tm != null) {
+            deviceId = tm.getDeviceId();
             if (!TextUtils.isEmpty(deviceId)) {
                 sb.append(deviceId);
             }
@@ -77,30 +75,9 @@ public class DeviceUtils {
         sb.append(android.os.Build.VERSION.SDK_INT);//系统的API级别 数字表示
         sb.append(android.os.Build.SERIAL);
 
-        uniqueId = md5(sb.toString().trim().toUpperCase());
+        uniqueId = MD5Utils.md5(sb.toString().trim().toUpperCase());
         Log.i(TAG, "生成唯一设备ID：" + uniqueId);
         Settings.System.putString(ctx.getContentResolver(), KEY_NAME, uniqueId);
         return uniqueId;
-    }
-
-
-    private static String md5(String str) {
-        byte[] hash;
-        try {
-            hash = MessageDigest.getInstance("MD5").digest(str.getBytes("UTF-8"));
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            return null;
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return null;
-        }
-        StringBuilder hex = new StringBuilder(hash.length * 2);
-        for (byte b : hash) {
-            if ((b & 0xFF) < 0x10)
-                hex.append("0");
-            hex.append(Integer.toHexString(b & 0xFF));
-        }
-        return hex.toString().toUpperCase();
     }
 }
