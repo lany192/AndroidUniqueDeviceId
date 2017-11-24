@@ -19,6 +19,8 @@ public class DeviceUtils {
 
     /**
      * 根据设备特征生成一个不变的设备id
+     * @param context 上下文
+     * @return 唯一设备id
      */
     public static String getUniqueDeviceId(Context context) {
         Context ctx = context.getApplicationContext();
@@ -48,15 +50,16 @@ public class DeviceUtils {
             sb.append(androidId);
         }
 
-        if (TextUtils.isEmpty(androidId) && TextUtils.isEmpty(deviceId)) {
+        if ((TextUtils.isEmpty(androidId) || androidId.equals("9774d56d682e549c") || androidId.equals("0000000000000"))
+                && TextUtils.isEmpty(deviceId)) {
             sb.append(UUID.randomUUID().toString());//随机生成UUID
         }
 
         sb.append(android.os.Build.BOARD);//获取设备基板名称
         sb.append(android.os.Build.BOOTLOADER);//获取设备引导程序版本号
         sb.append(android.os.Build.BRAND);//获取设备品牌
-//        sb.append(android.os.Build.CPU_ABI);//获取设备指令集名称（CPU的类型）
-//        sb.append(android.os.Build.CPU_ABI2);//获取第二个指令集名称
+        sb.append(android.os.Build.CPU_ABI);//获取设备指令集名称（CPU的类型）
+        sb.append(android.os.Build.CPU_ABI2);//获取第二个指令集名称
         sb.append(android.os.Build.DEVICE);//获取设备驱动名称
         sb.append(android.os.Build.DISPLAY);//获取设备显示的版本包（在系统设置中显示为版本号）和ID一样
         sb.append(android.os.Build.FINGERPRINT);//设备的唯一标识。由设备的多个信息拼接合成。

@@ -10,7 +10,7 @@ publish {
     userOrg = 'lany192'
     groupId = 'com.lany'
     uploadName = 'UniqueDeviceId'
-    publishVersion = '1.0.4'
+    publishVersion = '1.0.5'
     autoPublish = true
     dryRun = false
     desc = 'generate android unique device id.'
