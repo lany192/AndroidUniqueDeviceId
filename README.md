@@ -1,3 +1,6 @@
+该项目不再维护，有需求的可以看下这个项目：
+https://github.com/gzu-liyujiang/Android_CN_OAID
+
 [ ![Download](https://api.bintray.com/packages/lany192/maven/UniqueDeviceId/images/download.svg) ](https://bintray.com/lany192/maven/UniqueDeviceId/_latestVersion)
 ## Gradle引用
     compile 'com.lany:UniqueDeviceId:1.0.4'
